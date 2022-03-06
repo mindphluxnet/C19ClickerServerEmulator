@@ -102,3 +102,10 @@ const RawMaterial = {
 };
 
 Object.freeze(RawMaterial);
+
+const UpgradeType = {
+    ShorteningTime: 0,
+    MultiplyingProduction: 1
+};
+
+Object.freeze(UpgradeType);
