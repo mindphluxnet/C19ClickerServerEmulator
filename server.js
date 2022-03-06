@@ -5,9 +5,9 @@ const Datastore = require("nedb"),
 const { v4: uuidv4 } = require("uuid");
 const _ = require("lodash");
 
-const Category = require("./Category");
-const UpgradeType = require("./UpgradeType");
-const RawMaterial = require("./RawMaterial");
+const Category = require("./Enums/Category");
+const UpgradeType = require("./Enums/UpgradeType");
+const RawMaterial = require("./Enums/RawMaterial");
 
 var AppConfig = require("./AppConfig");
 router.use("/AppConfig", AppConfig);
