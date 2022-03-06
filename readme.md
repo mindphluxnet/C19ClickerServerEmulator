@@ -26,3 +26,12 @@ or with nodemon active
 ```
 npm devstart
 ```
+
+# What works - and what doesn't
+
+* User accounts: working. New users get a new account created automatically.
+* User login: working.
+* Leaderboards: working so far but probably needs more development.
+* Categories: working, but numbers are completely made up.
+* Cards: not working, only API endpoints are implemented right now.
+* Advancement: not working.
