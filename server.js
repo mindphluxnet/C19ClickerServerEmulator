@@ -9,17 +9,17 @@ const Category = require("./Enums/Category");
 const UpgradeType = require("./Enums/UpgradeType");
 const RawMaterial = require("./Enums/RawMaterial");
 
-var AppConfig = require("./AppConfig");
+var AppConfig = require("./ServerModules/AppConfig");
 router.use("/AppConfig", AppConfig);
 
-var SetPlayerData = require("./SetPlayerData");
+var SetPlayerData = require("./ServerModules/SetPlayerData");
 router.use("/SetPlayerData", SetPlayerData);
 
-var UserDevCards = require("./UserDevCards");
+var UserDevCards = require("./ServerModules/UserDevCards");
 router.use("/UserDevCards", UserDevCards);
 
-var GetLeaderboard = require("./GetLeaderboard");
-const { random } = require("lodash");
+var GetLeaderboard = require("./ServerModules/GetLeaderboard");
+
 router.use("/GetLeaderboard", GetLeaderboard);
 
 router.post("/GetPlayerData", (req, res) => {
