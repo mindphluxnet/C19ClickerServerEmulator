@@ -31,6 +31,7 @@ npm devstart
 
 * User accounts: working. New users get a new account created automatically.
 * User login: working.
+* User rename: working.
 * Leaderboards: working so far but probably needs more development.
 * Categories: working, but numbers are completely made up.
 * Tasks: working, but only placeholder data is sent.
