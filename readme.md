@@ -33,5 +33,6 @@ npm devstart
 * User login: working.
 * Leaderboards: working so far but probably needs more development.
 * Categories: working, but numbers are completely made up.
+* Tasks: working, but only placeholder data is sent.
 * Cards: not working, only API endpoints are implemented right now.
 * Advancement: not working.
