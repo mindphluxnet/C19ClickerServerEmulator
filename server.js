@@ -23,7 +23,7 @@ router.use("/GetLeaderboard", GetLeaderboard);
 router.post("/GetPlayerData", (req, res) => {
   console.log("/GetPlayerData");
   var UDID = req.body.UDID;
-  db.find({ udid: UDID }, function (err, item) {
+  db.findOne({ udid: UDID }, function (err, item) {
     if (item.length == 0) {
       var _accountId = uuidv4();
 
@@ -151,7 +151,7 @@ router.post("/GetAvailableCards", (req, res) => {
   console.log("/GetAvailableCards");
   var UDID = req.body.UDID;
 
-  db.find({ udid: UDID }, function (err, item) {
+  db.findOne({ udid: UDID }, function (err, item) {
     res.send(item.cards);
   });
 });
