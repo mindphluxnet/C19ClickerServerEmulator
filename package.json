@@ -1,0 +1,20 @@
+{
+  "name": "c19server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "2.0.15"
+  },
+  "dependencies": {
+    "express": "4.17.3",
+    "lodash": "4.17.21",
+    "nedb": "1.8.0",
+    "uuid": "8.3.2"
+  }
+}
