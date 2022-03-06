@@ -5,7 +5,9 @@ const Datastore = require("nedb"),
 const { v4: uuidv4 } = require("uuid");
 const _ = require("lodash");
 
-require("./constants.js");
+const Category = require("./Category");
+const UpgradeType = require("./UpgradeType");
+const RawMaterial = require("./RawMaterial");
 
 var AppConfig = require("./AppConfig");
 router.use("/AppConfig", AppConfig);
@@ -23,7 +25,7 @@ router.use("/GetLeaderboard", GetLeaderboard);
 router.post("/GetPlayerData", (req, res) => {
   console.log("/GetPlayerData");
   var UDID = req.body.UDID;
-  db.findOne({ udid: UDID }, function (err, item) {
+  db.find({ udid: UDID }, function (err, item) {
     if (item.length == 0) {
       var _accountId = uuidv4();
 
