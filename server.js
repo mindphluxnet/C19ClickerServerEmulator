@@ -43,36 +43,37 @@ router.post("/GetPlayerData", (req, res) => {
           score: 0.0,
           ep: 0,
           cards: [],
+          tasks: [],
           categories: [
-            { categoryId: SECURITY, isUnlocked: true, minRank: 0, price: 0 },
-            { categoryId: CURRENCY, isUnlocked: true, minRank: 0, price: 0 },
+            { categoryId: Category.Security, isUnlocked: true, minRank: 0, price: 0 },
+            { categoryId: Category.Currency, isUnlocked: true, minRank: 0, price: 0 },
             {
-              categoryId: HEALTHSERVICE,
+              categoryId: Category.HealthService,
               isUnlocked: false,
               minRank: 1,
               price: 10000,
             },
-            { categoryId: NONE, isUnlocked: false, minRank: 0 },
+            { categoryId: Category.None, isUnlocked: false, minRank: 0 },
             {
-              categoryId: POLITICS,
+              categoryId: Category.Politics,
               isUnlocked: false,
               minRank: 5,
               price: 50000,
             },
             {
-              categoryId: PRODUCTION,
+              categoryId: Category.Production,
               isUnlocked: false,
               minRank: 50,
               price: 500000,
             },
             {
-              categoryId: QUARANTINE,
+              categoryId: Category.Quarantine,
               isUnlocked: false,
               minRank: 25,
               price: 100000,
             },
             {
-              categoryId: RESEARCH,
+              categoryId: Category.Research,
               isUnlocked: false,
               minRank: 10,
               price: 1000000,
@@ -162,6 +163,37 @@ router.post("/GetRandomTasks", (req, res) => {
 
   var task = { taskTypeId: 1, rawMaterialId: 1, randomValue: 1 };
   res.send(task);
+});
+
+router.post("/UpdateTask", (req, res) => {
+  console.log("/UpdateTask");
+  var UDID = req.body.UDID;
+  var taskTypeId = req.body.taskTypeId;
+  var rawMaterialId = req.body.rawMaterialId;
+  var randomValue = req.body.value;
+
+  db.findOne({ udid: UDID }, function (err, item) {
+    var _tasks = item.tasks;
+    for (i = 0; i < _tasks.length; i++) {
+      if(_tasks[i].taskTypeId == taskTypeId && _tasks[i].rawMaterialId == rawMaterialId && _tasks[i].randomValue == randomValue) 
+      {
+        _tasks[i].isCompleted = true;
+        break;
+      };
+    };
+
+    db.update(
+      { udid: UDID },
+      { $set: { tasks: _tasks } },
+      {},
+      function (err, numReplaced) {
+        if (numReplaced != 0) {
+          res.send({ isSuccess: true });
+        } else {
+          res.send({ isSuccess: false });
+        }
+      });
+    });
 });
 
 router.post("/GetTime", (req, res) => {
