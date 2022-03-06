@@ -3,6 +3,7 @@ const router = express.Router();
 const Datastore = require("nedb"),
   db = new Datastore({ filename: "./database/data.db", autoload: true });
 const { v4: uuidv4 } = require("uuid");
+const _ = require("lodash");
 
 require("./constants.js");
 
@@ -16,6 +17,7 @@ var UserDevCards = require("./UserDevCards");
 router.use("/UserDevCards", UserDevCards);
 
 var GetLeaderboard = require("./GetLeaderboard");
+const { random } = require("lodash");
 router.use("/GetLeaderboard", GetLeaderboard);
 
 router.post("/GetPlayerData", (req, res) => {
@@ -76,7 +78,7 @@ router.post("/GetPlayerData", (req, res) => {
               price: 1000000,
             },
           ],
-          userName: "New User " + _accountId,
+          userName: "User_" + _.random(10000, 99999, false),
         },
         function (err, result) {
           db.findOne({ udid: UDID }, function (err, item) {
