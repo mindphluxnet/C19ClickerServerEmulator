@@ -29,12 +29,12 @@ npm devstart
 
 # What works - and what doesn't
 
-* User accounts: working. New users get a new account created automatically.
+* User accounts: working. New users get a new account created automatically. Now uses Steam to get an UDID.
 * User login: working.
 * User rename: working.
 * Leaderboards: working so far but probably needs more development.
 * Categories: working, but numbers are completely made up.
-* Tasks: working, but only placeholder data is sent.
+* Tasks: working, but only placeholder data is sent. Updating tasks on the server side should work now, but untested.
 * Cards: partially working, but missing data.
 * Advancement: not working.
 
