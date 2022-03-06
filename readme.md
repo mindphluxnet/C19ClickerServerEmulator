@@ -35,5 +35,12 @@ npm devstart
 * Leaderboards: working so far but probably needs more development.
 * Categories: working, but numbers are completely made up.
 * Tasks: working, but only placeholder data is sent.
-* Cards: not working, only API endpoints are implemented right now.
+* Cards: partially working, but missing data.
 * Advancement: not working.
+
+# Problems
+
+After working with the game's code for a while I noticed that some parts have never been finished.
+For example Tasks are not saved to the server as the function only contains dummy code. It's also 
+unclear what clicking the advance button actually does server-side. I know what it's supposed to return
+but that can't be all it does.
