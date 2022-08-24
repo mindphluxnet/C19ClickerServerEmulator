@@ -34,7 +34,7 @@ npm devstart
 * User rename: working.
 * Leaderboards: working so far but probably needs more development.
 * Categories: working, but numbers are completely made up.
-* Tasks: working, but only placeholder data is sent. Updating tasks on the server side should work now, but untested.
+* Tasks: working, but untested
 * Cards: partially working, but missing data.
 * Advancement: not working.
 
