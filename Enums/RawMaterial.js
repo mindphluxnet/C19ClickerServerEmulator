@@ -1,4 +1,4 @@
-module.exports = Object.freeze({
+RawMaterials = Object.freeze({
     None: 0,
     ResistanceToVirus: 1,
     EvolutionPoints: 2,
@@ -87,3 +87,15 @@ module.exports = Object.freeze({
     Quarantine: 85,
     Production: 86,
   });
+
+  RawMaterialGroups = {
+    1: [ RawMaterials.ResistanceToVirus, RawMaterials.EvolutionPoints ],
+    2: [ RawMaterials.PaperTowels, RawMaterials.AntibacterialWipe, RawMaterials.DisinfectantLiquid, RawMaterials.RubberGloves, RawMaterials.TabletsForImmunity, RawMaterials.CottonMask, RawMaterials.CourierDeliveringFoodToHomes, RawMaterials.Thermometer, RawMaterials.Antipyretics, RawMaterials.MaskWithFilter, RawMaterials.OxygenBottle, RawMaterials.ProtectiveSuit ],
+    3: [ RawMaterials.Volunteers, RawMaterials.MedicalUniversityStudents, RawMaterials.InternalMedicineDoctors, RawMaterials.Clinic, RawMaterials.FreePreliminaryTestsForSuspects, RawMaterials.DisinfectingRooms, RawMaterials.Ambulances, RawMaterials.Nurses, RawMaterials.Hospitals, RawMaterials.SanitaryInspections, RawMaterials.SpecialistDoctors, RawMaterials.SecondDegreeSpecialists ],
+    4: [ RawMaterials.PromotingHygiene, RawMaterials.TemperatureMeasurementsAndPreliminaryInterview, RawMaterials.ForcedObservationOfSuspects, RawMaterials.IncreasedFlightControl, RawMaterials.IncreasedControlOfInternationalTransport, RawMaterials.EnhancedBorderControl, RawMaterials.RestrictingMassEvents, RawMaterials.RestrictingAccessToCulturalGoods, RawMaterials.IncreasedSecurityProceduresForSchools, RawMaterials.PromotionOfRemoteWork, RawMaterials.AdditionalVacationDays, RawMaterials.AllocationOfFoodAndSanitaryProducts, RawMaterials.PromotionOfCremationOfCorpses ],
+    5: [ RawMaterials.Biologists, RawMaterials.CollectingSamples, RawMaterials.Scientists, RawMaterials.VirusTesting, RawMaterials.ResearchLaboratories, RawMaterials.AnimalResearch, RawMaterials.InternationalResearchInstitutionsMIB, RawMaterials.SearchingForThoseInfectedVoluntarily, RawMaterials.HumanStudies, RawMaterials.SearchForDrugsForImmunity, RawMaterials.SearchingForAntibiotics, RawMaterials.VaccineSearch ],
+    6: [ RawMaterials.RecommendationsNotToLeaveTheHouse, RawMaterials.ForcedQuarantineForVisitors, RawMaterials.ClosingStores, RawMaterials.ProhibitionOfLeavingMinorsFromHomes, RawMaterials.Curfew, RawMaterials.IsolationOfInfectedPeople, RawMaterials.ProtectionOfHighRankingPersons, RawMaterials.ForcedTesting, RawMaterials.PolicePatrols, RawMaterials.MilitaryPatrols, RawMaterials.ClosingCities, RawMaterials.UtilizationOfClothesAndObjectsInContactWithInfected ],
+    7: [ RawMaterials.ProductionOfDisinfectantLiquids, RawMaterials.ProductionOfRubberGloves, RawMaterials.ProductionOfCottonMasks, RawMaterials.ProductionOfTremometers, RawMaterials.ProductionOfMasksWithFilter, RawMaterials.ProductionOfProtectiveSuits, RawMaterials.AdditionalRecruitmentOfInternalMedicineDoctors, RawMaterials.AdditionalRecruitmentOfNurses, RawMaterials.ConstructionOfClinics, RawMaterials.BuildingHospitals, RawMaterials.AdditionalRecruitmentOfSpecialistDoctors, RawMaterials.AdditionalRecruitmentOfBiologists, RawMaterials.AdditionalRecruitmentOfScientists, RawMaterials.BuildingResearchLaboratories, RawMaterials.AdditionalRecruitmentForVoluntaryVirusInfection, RawMaterials.AdditionalRecruitmentOfPoliceOfficers, RawMaterials.AdditionalRecruitmentOfMilitaryServices ], 
+  };
+
+  module.exports = RawMaterials;
