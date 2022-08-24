@@ -86,12 +86,14 @@ router.post("/GetPlayerData", (req, res) => {
         function (err, result) {
           db.findOne({ udid: UDID }, function (err, item) {
             item.isNewUser = true;
+            item["resistanceToVirus"] = item["RawMaterialCount_ResistanceToVirus"];
             res.send(item);
           });
         }
       );
     } else {
       console.log("Found existing account");
+      item[0]["resistanceToVirus"] = item[0]["RawMaterialCount_ResistanceToVirus"];
       res.send(item[0]);
     }
   });
