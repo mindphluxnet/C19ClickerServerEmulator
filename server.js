@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Datastore = require("nedb"),
-  db = new Datastore({ filename: "./database/data.db", autoload: true });
+
 const { v4: uuidv4 } = require("uuid");
 const _ = require("lodash");
 
 const Category = require("./Enums/Category");
 const UpgradeType = require("./Enums/UpgradeType");
 const RawMaterial = require("./Enums/RawMaterial");
+
+const db = require("./ServerModules/Database");
 
 var AppConfig = require("./ServerModules/AppConfig");
 router.use("/AppConfig", AppConfig);
@@ -19,8 +20,10 @@ var UserDevCards = require("./ServerModules/UserDevCards");
 router.use("/UserDevCards", UserDevCards);
 
 var GetLeaderboard = require("./ServerModules/GetLeaderboard");
-
 router.use("/GetLeaderboard", GetLeaderboard);
+
+
+const OnlineUsers = require("./ServerModules/OnlineUsers");
 
 router.post("/GetPlayerData", (req, res) => {
   console.log("/GetPlayerData");
@@ -88,6 +91,8 @@ router.post("/GetPlayerData", (req, res) => {
             item.isNewUser = true;
             item["resistanceToVirus"] = item["RawMaterialCount_ResistanceToVirus"];
             res.send(item);
+
+            OnlineUsers.SetOnline(UDID);
           });
         }
       );
@@ -95,61 +100,69 @@ router.post("/GetPlayerData", (req, res) => {
       console.log("Found existing account");
       item[0]["resistanceToVirus"] = item[0]["RawMaterialCount_ResistanceToVirus"];
       res.send(item[0]);
+
+      OnlineUsers.SetOnline(UDID);
     }
   });
 });
 
 router.post("/GetCategoryDetails", (req, res) => {
-  console.log("/GetCategoryDetails");
-  var UDID = req.body.UDID;
-  var categoryId = req.body.categoryId;
-
-  db.findOne({ udid: UDID }, function (err, item) {
-    for (i = 0; i < item.categories.length; i++) {
-      if (item.categories[i].categoryId == categoryId) {
-        var response = {
-          isUnlocked: item.categories[i].isUnlocked,
-          categoryId: item.categories[i].categoryId,
-          category: {
-            price: item.categories[i].price,
-            minRank: item.categories[i].minRank,
-          },
-        };
-
-        res.send(response);
-        return;
-      }
-    }
-  });
-});
-
-router.post("/UnlockCategory", (req, res) => {
-  console.log("/UnlockCategory");
-  var UDID = req.body.UDID;
-  var categoryId = req.body.categoryId;
-
-  db.findOne({ udid: UDID }, function (err, item) {
-    var _categories = item.categories;
-    for (i = 0; i < _categories.length; i++) {
-      if (_categories[i].categoryId == categoryId) {
-        _categories[i].isUnlocked = true;
-        break;
-      }
-    }
-    db.update(
-      { udid: UDID },
-      { $set: { categories: _categories } },
-      {},
-      function (err, numReplaced) {
-        if (numReplaced != 0) {
-          res.send({ isSuccess: true });
-        } else {
-          res.send({ isSuccess: false });
+    console.log("/GetCategoryDetails");
+    var UDID = req.body.UDID;
+    var categoryId = req.body.categoryId;
+  
+    db.findOne({ udid: UDID }, function (err, item) {
+      for (i = 0; i < item.categories.length; i++) {
+        if (item.categories[i].categoryId == categoryId) {
+          var response = {
+            isUnlocked: item.categories[i].isUnlocked,
+            categoryId: item.categories[i].categoryId,
+            category: {
+              price: item.categories[i].price,
+              minRank: item.categories[i].minRank,
+            },
+          };
+  
+          res.send(response);
+          return;
         }
       }
-    );
+    });
+  
+    OnlineUsers.SetOnline(UDID);
   });
-});
+  
+  router.post("/UnlockCategory", (req, res) => {
+    console.log("/UnlockCategory");
+    var UDID = req.body.UDID;
+    var categoryId = req.body.categoryId;
+  
+    db.findOne({ udid: UDID }, function (err, item) {
+      var _categories = item.categories;
+      for (i = 0; i < _categories.length; i++) {
+        if (_categories[i].categoryId == categoryId) {
+          _categories[i].isUnlocked = true;
+          break;
+        }
+      }
+      db.update(
+        { udid: UDID },
+        { $set: { categories: _categories } },
+        {},
+        function (err, numReplaced) {
+          if (numReplaced != 0) {
+            res.send({ isSuccess: true });
+          } else {
+            res.send({ isSuccess: false });
+          }
+        }
+      );
+    });
+  
+    OnlineUsers.SetOnline(UDID);
+  });
+
+module.exports = router;
 
 router.post("/GetAvailableCards", (req, res) => {
   console.log("/GetAvailableCards");
@@ -158,15 +171,37 @@ router.post("/GetAvailableCards", (req, res) => {
   db.findOne({ udid: UDID }, function (err, item) {
     res.send(item.cards);
   });
+
+  OnlineUsers.SetOnline(UDID);
 });
 
 router.post("/GetRandomTasks", (req, res) => {
   console.log("/GetRandomTasks");
   var UDID = req.body.UDID;
-  var taskCount = req.body.taskCount;
+  var taskCount = parseInt(req.body.taskCount);
 
-  var task = { taskTypeId: 1, rawMaterialId: 1, randomValue: 1 };
-  res.send(task);
+  // taskTypeIds:
+  // 1 - Buy
+  // 2 - Get
+  // 3 - Upgrade
+  // 4 - Spend
+
+  var tasks = [];
+  for (i = 0; i < taskCount; i++) {
+    var taskTypeId = _.random(1, 4, false);
+    var task = {
+      taskTypeId: taskTypeId,
+      rawMaterialId: 1,
+      randomValue: _.random(1, 10, false),
+      isCompleted: false,
+    };
+    tasks.push(task);
+  }
+
+  db.update({ udid: UDID} , { $set: { tasks: tasks } }, {}, function (err, numReplaced) {});
+  res.send(tasks);
+
+  OnlineUsers.SetOnline(UDID);
 });
 
 router.post("/UpdateTask", (req, res) => {
@@ -198,6 +233,8 @@ router.post("/UpdateTask", (req, res) => {
         }
       });
     });
+
+    OnlineUsers.SetOnline(UDID);
 });
 
 router.post("/GetTime", (req, res) => {
@@ -236,5 +273,6 @@ router.post("/GetTime", (req, res) => {
     "+00:00";
   res.send(roundTripTime);
 });
+
 
 module.exports = router;

@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Datastore = require("nedb"),
-  db = new Datastore({ filename: "./database/data.db", autoload: true });
+const db = require("./Database");
 
 router.post("/GetCards", (req, res) => {
   console.log("/UserDevCards/GetCards");

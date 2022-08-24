@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Datastore = require("nedb"),
-  db = new Datastore({ filename: "./database/data.db", autoload: true });
+const db = require("./Database");
 
 router.post("/ChangeName", (req, res) => {
   console.log("/SetPlayerData/ChangeName");
