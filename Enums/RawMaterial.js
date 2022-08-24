@@ -98,4 +98,4 @@ RawMaterials = Object.freeze({
     7: [ RawMaterials.ProductionOfDisinfectantLiquids, RawMaterials.ProductionOfRubberGloves, RawMaterials.ProductionOfCottonMasks, RawMaterials.ProductionOfTremometers, RawMaterials.ProductionOfMasksWithFilter, RawMaterials.ProductionOfProtectiveSuits, RawMaterials.AdditionalRecruitmentOfInternalMedicineDoctors, RawMaterials.AdditionalRecruitmentOfNurses, RawMaterials.ConstructionOfClinics, RawMaterials.BuildingHospitals, RawMaterials.AdditionalRecruitmentOfSpecialistDoctors, RawMaterials.AdditionalRecruitmentOfBiologists, RawMaterials.AdditionalRecruitmentOfScientists, RawMaterials.BuildingResearchLaboratories, RawMaterials.AdditionalRecruitmentForVoluntaryVirusInfection, RawMaterials.AdditionalRecruitmentOfPoliceOfficers, RawMaterials.AdditionalRecruitmentOfMilitaryServices ], 
   };
 
-  module.exports = RawMaterials;
+  module.exports = { RawMaterials, RawMaterialGroups };
