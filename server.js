@@ -189,9 +189,12 @@ router.post("/GetRandomTasks", (req, res) => {
   var tasks = [];
   for (i = 0; i < taskCount; i++) {
     var taskTypeId = _.random(1, 4, false);
+
+    var categoryId = _.sample(GetUnlockedCategories(UDID));
+
     var task = {
       taskTypeId: taskTypeId,
-      rawMaterialId: 1,
+      rawMaterialId: RawMaterial.RawMaterialGroups[categoryId][_.random(0, RawMaterial.RawMaterialGroups[categoryId].length - 1, false)],
       randomValue: _.random(1, 10, false),
       isCompleted: false,
     };
@@ -203,6 +206,19 @@ router.post("/GetRandomTasks", (req, res) => {
 
   OnlineUsers.SetOnline(UDID);
 });
+
+function GetUnlockedCategories(udid) {
+  var categories = [];
+  db.findOne({ udid: udid }, function (err, item) {
+    for (i = 0; i < item.categories.length; i++) {
+      if (item.categories[i].isUnlocked) {
+        categories.push(item.categories[i].categoryId);
+      }
+    }
+  }).then(() => {
+    return categories;
+  });
+}
 
 router.post("/UpdateTask", (req, res) => {
   console.log("/UpdateTask");
