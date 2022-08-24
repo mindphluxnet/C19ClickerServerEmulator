@@ -1,8 +1,8 @@
 # Installation: Game
 
 Since the game is no longer on the Steam store you can use 
-steam://install/1316610 to install it. By default it doesn't work and requires
-my custom loader to run. You can find it in the Loader directory of this repository; 
+[this link](steam://install/1316610) to install it. As the official server has been shut down my
+my custom loader is required. You can find it in the [Loader](Loader) directory of this repository; 
 simply unzip it to the game directory.
 
 # Installation: Server
