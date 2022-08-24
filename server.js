@@ -22,7 +22,6 @@ router.use("/UserDevCards", UserDevCards);
 var GetLeaderboard = require("./ServerModules/GetLeaderboard");
 router.use("/GetLeaderboard", GetLeaderboard);
 
-
 const OnlineUsers = require("./ServerModules/OnlineUsers");
 
 router.post("/GetPlayerData", (req, res) => {
@@ -50,8 +49,18 @@ router.post("/GetPlayerData", (req, res) => {
           cards: [],
           tasks: [],
           categories: [
-            { categoryId: Category.Security, isUnlocked: true, minRank: 0, price: 0 },
-            { categoryId: Category.Currency, isUnlocked: true, minRank: 0, price: 0 },
+            {
+              categoryId: Category.Security,
+              isUnlocked: false,
+              minRank: 0,
+              price: 0,
+            },
+            {
+              categoryId: Category.Currency,
+              isUnlocked: true,
+              minRank: 0,
+              price: 0,
+            },
             {
               categoryId: Category.HealthService,
               isUnlocked: false,
@@ -89,7 +98,8 @@ router.post("/GetPlayerData", (req, res) => {
         function (err, result) {
           db.findOne({ udid: UDID }, function (err, item) {
             item.isNewUser = true;
-            item["resistanceToVirus"] = item["RawMaterialCount_ResistanceToVirus"];
+            item["resistanceToVirus"] =
+              item["RawMaterialCount_ResistanceToVirus"];
             res.send(item);
 
             OnlineUsers.SetOnline(UDID);
@@ -98,7 +108,8 @@ router.post("/GetPlayerData", (req, res) => {
       );
     } else {
       console.log("Found existing account");
-      item[0]["resistanceToVirus"] = item[0]["RawMaterialCount_ResistanceToVirus"];
+      item[0]["resistanceToVirus"] =
+        item[0]["RawMaterialCount_ResistanceToVirus"];
       res.send(item[0]);
 
       OnlineUsers.SetOnline(UDID);
@@ -107,60 +118,60 @@ router.post("/GetPlayerData", (req, res) => {
 });
 
 router.post("/GetCategoryDetails", (req, res) => {
-    console.log("/GetCategoryDetails");
-    var UDID = req.body.UDID;
-    var categoryId = req.body.categoryId;
-  
-    db.findOne({ udid: UDID }, function (err, item) {
-      for (i = 0; i < item.categories.length; i++) {
-        if (item.categories[i].categoryId == categoryId) {
-          var response = {
-            isUnlocked: item.categories[i].isUnlocked,
-            categoryId: item.categories[i].categoryId,
-            category: {
-              price: item.categories[i].price,
-              minRank: item.categories[i].minRank,
-            },
-          };
-  
-          res.send(response);
-          return;
+  console.log("/GetCategoryDetails");
+  var UDID = req.body.UDID;
+  var categoryId = req.body.categoryId;
+
+  db.findOne({ udid: UDID }, function (err, item) {
+    for (i = 0; i < item.categories.length; i++) {
+      if (item.categories[i].categoryId == categoryId) {
+        var response = {
+          isUnlocked: item.categories[i].isUnlocked,
+          categoryId: item.categories[i].categoryId,
+          category: {
+            price: item.categories[i].price,
+            minRank: item.categories[i].minRank,
+          },
+        };
+
+        res.send(response);
+        return;
+      }
+    }
+  });
+
+  OnlineUsers.SetOnline(UDID);
+});
+
+router.post("/UnlockCategory", (req, res) => {
+  console.log("/UnlockCategory");
+  var UDID = req.body.UDID;
+  var categoryId = req.body.categoryId;
+
+  db.findOne({ udid: UDID }, function (err, item) {
+    var _categories = item.categories;
+    for (i = 0; i < _categories.length; i++) {
+      if (_categories[i].categoryId == categoryId) {
+        _categories[i].isUnlocked = true;
+        break;
+      }
+    }
+    db.update(
+      { udid: UDID },
+      { $set: { categories: _categories } },
+      {},
+      function (err, numReplaced) {
+        if (numReplaced != 0) {
+          res.send({ isSuccess: true });
+        } else {
+          res.send({ isSuccess: false });
         }
       }
-    });
-  
-    OnlineUsers.SetOnline(UDID);
+    );
   });
-  
-  router.post("/UnlockCategory", (req, res) => {
-    console.log("/UnlockCategory");
-    var UDID = req.body.UDID;
-    var categoryId = req.body.categoryId;
-  
-    db.findOne({ udid: UDID }, function (err, item) {
-      var _categories = item.categories;
-      for (i = 0; i < _categories.length; i++) {
-        if (_categories[i].categoryId == categoryId) {
-          _categories[i].isUnlocked = true;
-          break;
-        }
-      }
-      db.update(
-        { udid: UDID },
-        { $set: { categories: _categories } },
-        {},
-        function (err, numReplaced) {
-          if (numReplaced != 0) {
-            res.send({ isSuccess: true });
-          } else {
-            res.send({ isSuccess: false });
-          }
-        }
-      );
-    });
-  
-    OnlineUsers.SetOnline(UDID);
-  });
+
+  OnlineUsers.SetOnline(UDID);
+});
 
 module.exports = router;
 
@@ -187,38 +198,41 @@ router.post("/GetRandomTasks", (req, res) => {
   // 4 - Spend
 
   var tasks = [];
-  for (i = 0; i < taskCount; i++) {
-    var taskTypeId = _.random(1, 4, false);
 
-    var categoryId = _.sample(GetUnlockedCategories(UDID));
+  var unlockedCategories = [];
 
-    var task = {
-      taskTypeId: taskTypeId,
-      rawMaterialId: RawMaterial.RawMaterialGroups[categoryId][_.random(0, RawMaterial.RawMaterialGroups[categoryId].length - 1, false)],
-      randomValue: _.random(1, 10, false),
-      isCompleted: false,
-    };
-    tasks.push(task);
-  }
-
-  db.update({ udid: UDID} , { $set: { tasks: tasks } }, {}, function (err, numReplaced) {});
-  res.send(tasks);
-
-  OnlineUsers.SetOnline(UDID);
-});
-
-function GetUnlockedCategories(udid) {
-  var categories = [];
-  db.findOne({ udid: udid }, function (err, item) {
-    for (i = 0; i < item.categories.length; i++) {
+  db.findOne({ udid: UDID }, function (err, item) {
+    for (i = 1; i < item.categories.length; i++) {
       if (item.categories[i].isUnlocked) {
-        categories.push(item.categories[i].categoryId);
+        unlockedCategories.push(item.categories[i].categoryId);
       }
     }
-  }).then(() => {
-    return categories;
+
+    for (i = 0; i < taskCount; i++) {
+      var taskTypeId = _.random(1, 4, false);
+  
+      var task = {
+        taskTypeId: taskTypeId,
+        rawMaterialId: _.sample(RawMaterial.RawMaterialGroups[_.sample(unlockedCategories)]),
+        randomValue: _.random(1, 10, false),
+        isCompleted: false,
+      };
+      tasks.push(task);
+    }
+  
+    db.update(
+      { udid: UDID },
+      { $set: { tasks: tasks } },
+      {},
+      function (err, numReplaced) {}
+    );
+    res.send(tasks);
+
   });
-}
+
+
+
+});
 
 router.post("/UpdateTask", (req, res) => {
   console.log("/UpdateTask");
@@ -230,12 +244,15 @@ router.post("/UpdateTask", (req, res) => {
   db.findOne({ udid: UDID }, function (err, item) {
     var _tasks = item.tasks;
     for (i = 0; i < _tasks.length; i++) {
-      if(_tasks[i].taskTypeId == taskTypeId && _tasks[i].rawMaterialId == rawMaterialId && _tasks[i].randomValue == randomValue) 
-      {
+      if (
+        _tasks[i].taskTypeId == taskTypeId &&
+        _tasks[i].rawMaterialId == rawMaterialId &&
+        _tasks[i].randomValue == randomValue
+      ) {
         _tasks[i].isCompleted = true;
         break;
-      };
-    };
+      }
+    }
 
     db.update(
       { udid: UDID },
@@ -247,10 +264,11 @@ router.post("/UpdateTask", (req, res) => {
         } else {
           res.send({ isSuccess: false });
         }
-      });
-    });
+      }
+    );
+  });
 
-    OnlineUsers.SetOnline(UDID);
+  OnlineUsers.SetOnline(UDID);
 });
 
 router.post("/GetTime", (req, res) => {
@@ -289,6 +307,5 @@ router.post("/GetTime", (req, res) => {
     "+00:00";
   res.send(roundTripTime);
 });
-
 
 module.exports = router;
