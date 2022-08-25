@@ -21,7 +21,7 @@ You can then start the server using
 npm start
 ```
 
-or with nodemon active
+or, for testing purposes, with nodemon active (this also wipes the database)
 
 ```
 npm devstart
@@ -40,7 +40,6 @@ npm devstart
 
 # Problems
 
-After working with the game's code for a while I noticed that some parts have never been finished.
-For example Tasks are not saved to the server as the function only contains dummy code. It's also 
-unclear what clicking the advance button actually does server-side. I know what it's supposed to return
-but that can't be all it does.
+Most features are working now to a point where the game is playable. However, due to missing information the numbers
+are likely all wrong and balancing is off. Unfortunately the original developer doesn't react to emails so there's no
+way to get the missing info.
