@@ -1,5 +1,4 @@
-﻿using BackendService.Player;
-using BepInEx;
+﻿using BepInEx;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -26,15 +25,12 @@ namespace C19Plugin
 
         }
 
-
-
- 
         private string AuxiliaryMethods_GetUDID(On.AuxiliaryMethods.orig_GetUDID orig)
         {
             return SteamUser.GetSteamID().m_SteamID.ToString();
         }
 
-        private async System.Threading.Tasks.Task<TaskModel> TasksServer_UpdateTask(On.TasksServer.orig_UpdateTask orig, TaskModel model)
+        private async Task<TaskModel> TasksServer_UpdateTask(On.TasksServer.orig_UpdateTask orig, TaskModel model)
         {
             bool _success = false;
 
@@ -108,10 +104,11 @@ namespace C19Plugin
         private string LanguageManager_GetField(On.LanguageSystem.LanguageManager.orig_GetField orig, string key)
         {
             Dictionary<string, string> _fields = new Dictionary<string, string>();
-            TextAsset textAsset = Resources.Load("LanguageSystem/" + "EN") as TextAsset;
+            
+            TextAsset textAsset = Resources.Load("LanguageSystem/EN") as TextAsset;
             if (textAsset == null)
             {
-                throw new Exception("File Resources/LanguageSystem/" + "EN" + ".txt not found.");
+                throw new Exception("File Resources/LanguageSystem/EN.txt not found.");
             }
             foreach (string text in textAsset.text.Split(new string[]
             {
