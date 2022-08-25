@@ -169,8 +169,6 @@ router.post("/UnlockCategory", (req, res) => {
   });
 });
 
-module.exports = router;
-
 router.post("/GetAvailableCards", (req, res) => {
   console.log("/GetAvailableCards");
   var UDID = req.body.UDID;
