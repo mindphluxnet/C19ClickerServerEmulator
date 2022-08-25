@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devstart": "nodemon index.js",
+    "devstart": "del database\\data.db  && nodemon index.js",
     "start": "node index.js"
   },
   "author": "",
