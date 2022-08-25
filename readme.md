@@ -33,10 +33,10 @@ npm devstart
 * User login: working.
 * User rename: working.
 * Leaderboards: working so far but probably needs more development.
-* Categories: working, but numbers are completely made up.
-* Tasks: working, but untested.
+* Categories: more or less working, but unlocks aren't functioning properly and numbers are made up.
+* Tasks: working.
 * Cards: partially working, but missing data.
-* Advancement: not working.
+* Advancement: working.
 
 # Problems
 
