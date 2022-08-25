@@ -7,6 +7,7 @@ const _ = require("lodash");
 const Category = require("./Enums/Category");
 const UpgradeType = require("./Enums/UpgradeType");
 const RawMaterial = require("./Enums/RawMaterial");
+const TaskType = require("./Enums/TaskType");
 
 const db = require("./ServerModules/Database");
 
@@ -184,12 +185,6 @@ router.post("/GetRandomTasks", (req, res) => {
   var UDID = req.body.UDID;
   var taskCount = parseInt(req.body.taskCount);
 
-  // taskTypeIds:
-  // 1 - Buy
-  // 2 - Get
-  // 3 - Upgrade
-  // 4 - Spend
-
   var tasks = [];
 
   var unlockedCategories = [];
@@ -202,7 +197,7 @@ router.post("/GetRandomTasks", (req, res) => {
     }
 
     for (i = 0; i < taskCount; i++) {
-      var taskTypeId = _.random(1, 4, false);
+      var taskTypeId = _.sample(TaskType);
 
       var task = {
         taskTypeId: taskTypeId,
