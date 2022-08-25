@@ -26,6 +26,7 @@ function GenerateLeaderboard(count, offset) {
 
   db.find({})
     .sort({ score: 1 })
+    .skip(offset)
     .limit(count)
     .exec(function (err, docs) {
       for (var i = 0; i < docs.count; i++) {
