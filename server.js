@@ -209,7 +209,7 @@ router.post("/GetRandomTasks", (req, res) => {
         rawMaterialId: _.sample(
           RawMaterial.RawMaterialGroups[_.sample(unlockedCategories)]
         ),
-        randomValue: _.random(1, 10, false),
+        randomValue: _.random(500 * (item.rank + 1), 5000 * (item.rank + 1), false),
         isCompleted: false,
       };
       tasks.push(task);
