@@ -48,13 +48,19 @@ router.post("/GetPlayerData", (req, res) => {
           tasks: [],
           categories: [
             {
-              categoryId: Category.Security,
+              categoryId: Category.None,
               isUnlocked: false,
               minRank: 0,
-              price: 0,
+              price: 0
             },
             {
               categoryId: Category.Currency,
+              isUnlocked: false,
+              minRank: 0,
+              price: 0
+            },
+            {
+              categoryId: Category.Security,
               isUnlocked: true,
               minRank: 0,
               price: 0,
@@ -62,21 +68,21 @@ router.post("/GetPlayerData", (req, res) => {
             {
               categoryId: Category.HealthService,
               isUnlocked: false,
-              minRank: 1,
+              minRank: 2,
               price: 10000,
             },
-            { categoryId: Category.None, isUnlocked: false, minRank: 0 },
             {
               categoryId: Category.Politics,
               isUnlocked: false,
               minRank: 5,
               price: 50000,
             },
+
             {
-              categoryId: Category.Production,
+              categoryId: Category.Research,
               isUnlocked: false,
-              minRank: 50,
-              price: 500000,
+              minRank: 10,
+              price: 1000000,
             },
             {
               categoryId: Category.Quarantine,
@@ -85,10 +91,10 @@ router.post("/GetPlayerData", (req, res) => {
               price: 100000,
             },
             {
-              categoryId: Category.Research,
+              categoryId: Category.Production,
               isUnlocked: false,
-              minRank: 10,
-              price: 1000000,
+              minRank: 50,
+              price: 500000,
             },
           ],
           userName: "User_" + _.random(10000, 99999, false),
@@ -198,16 +204,18 @@ router.post("/GetRandomTasks", (req, res) => {
 
     for (i = 0; i < taskCount; i++) {
       var taskTypeId = _.random(1, 4, false);
-  
+
       var task = {
         taskTypeId: taskTypeId,
-        rawMaterialId: _.sample(RawMaterial.RawMaterialGroups[_.sample(unlockedCategories)]),
+        rawMaterialId: _.sample(
+          RawMaterial.RawMaterialGroups[_.sample(unlockedCategories)]
+        ),
         randomValue: _.random(1, 10, false),
         isCompleted: false,
       };
       tasks.push(task);
     }
-  
+
     db.update(
       { udid: UDID },
       { $set: { tasks: tasks } },
@@ -215,11 +223,7 @@ router.post("/GetRandomTasks", (req, res) => {
       function (err, numReplaced) {}
     );
     res.send(tasks);
-
   });
-
-
-
 });
 
 router.post("/UpdateTask", (req, res) => {
