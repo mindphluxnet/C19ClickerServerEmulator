@@ -67,10 +67,10 @@ router.post("/SetEP", (req, res) => {
 });
 
 router.post("/AdvanceRank", (req, res) => {
-  console.log(req.body);
   var UDID = req.body.UDID;
-
-  res.send({ isSuccess: true });
+  db.update({ udid: UDID }, { $inc: { rank: 1 } }, {}, function (err, numReplaced) {
+    res.send({ isSuccess: true });
+  });
 });
 
 module.exports = router;

@@ -51,13 +51,13 @@ router.post("/GetPlayerData", (req, res) => {
               categoryId: Category.None,
               isUnlocked: false,
               minRank: 0,
-              price: 0
+              price: 0,
             },
             {
               categoryId: Category.Currency,
               isUnlocked: false,
               minRank: 0,
-              price: 0
+              price: 0,
             },
             {
               categoryId: Category.Security,
@@ -77,7 +77,6 @@ router.post("/GetPlayerData", (req, res) => {
               minRank: 5,
               price: 50000,
             },
-
             {
               categoryId: Category.Research,
               isUnlocked: false,
