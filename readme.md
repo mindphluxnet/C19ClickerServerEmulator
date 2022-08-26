@@ -7,7 +7,7 @@ simply unzip it to the game directory.
 
 # Installation: Server
 
-Requires Node.js 12.13.x
+Requires Node.js 16.16.x
 
 ``` 
 git clone https://github.com/mindphluxnet/C19ClickerServerEmulator
@@ -24,8 +24,16 @@ npm start
 or, for testing purposes, with nodemon active (this also wipes the database)
 
 ```
+npm wipestart
+```
+
+or 
+
+```
 npm devstart
 ```
+
+with nodemon active without wiping the database.
 
 # What works - and what doesn't
 
