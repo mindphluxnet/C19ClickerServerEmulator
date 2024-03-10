@@ -14,6 +14,7 @@ const db = require("./ServerModules/Database");
 const OfflinePlayers = require("./ServerTasks/OfflinePlayers");
 const offlinePlayersTask = new OfflinePlayers(db);
 
+// every 5 seconds, add 1 Resistance to Virus to players offline for 60+ seconds.
 setInterval(() => offlinePlayersTask.updateOfflinePlayers(), 5000);
 
 var AppConfig = require("./ServerModules/AppConfig");
