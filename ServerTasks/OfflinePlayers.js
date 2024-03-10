@@ -41,33 +41,3 @@ class OfflinePlayers {
 }
 
 module.exports = OfflinePlayers;
-/*
-async function updateOfflinePlayers() {
-    try {
-        const query = { last_activity: { $lte: Date.now() - 60000 } };
-        const recordsToUpdate = await new Promise((resolve, reject) => {
-            db.find(query, (err, docs) => {
-                if(err) reject(err);
-                else resolve(docs);
-            });
-        });        
-
-        recordsToUpdate.forEach(async record => {
-            const updatedValue = record.RawMaterialCount_ResistanceToVirus + 1;
-
-            await new Promise((resolve, reject) => {
-                db.update({ _id: record._id }, { $set: { RawMaterialCount_ResistanceToVirus: updatedValue }}, {}, err => {
-                    if(err) reject(err);
-                    else resolve();
-                });
-            });            
-        });
-    }
-    catch(error) {
-        console.error("Error:", error);
-    }
-}
-
-
-setInterval(updateOfflinePlayers, 5000);
-*/
