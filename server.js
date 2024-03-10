@@ -11,6 +11,11 @@ const TaskType = require("./Enums/TaskType");
 
 const db = require("./ServerModules/Database");
 
+const OfflinePlayers = require("./ServerTasks/OfflinePlayers");
+const offlinePlayersTask = new OfflinePlayers(db);
+
+setInterval(() => offlinePlayersTask.updateOfflinePlayers(), 5000);
+
 var AppConfig = require("./ServerModules/AppConfig");
 router.use("/AppConfig", AppConfig);
 
@@ -47,6 +52,7 @@ router.post("/GetPlayerData", (req, res) => {
           ep: 0,
           cards: [],
           tasks: [],
+          last_activity: Date.now(),
           categories: [
             {
               categoryId: Category.None,
