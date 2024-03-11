@@ -2,9 +2,12 @@
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 namespace C19Plugin
 {
@@ -22,7 +25,50 @@ namespace C19Plugin
             On.LanguageSystem.LanguageManager.GetField += LanguageManager_GetField;
             On.TasksServer.UpdateTask += TasksServer_UpdateTask;
             On.AuxiliaryMethods.GetUDID += AuxiliaryMethods_GetUDID;
+            On.PlayerModel.ctor_JSONObject += PlayerModel_ctor_JSONObject;
 
+        }
+
+        private void PlayerModel_ctor_JSONObject(On.PlayerModel.orig_ctor_JSONObject orig, PlayerModel self, JSONObject json)
+        {
+            if (json != null && json.HasFields(new string[2] { "accountId", "rank" }))
+            {
+                self.accountId = json.GetField("accountId").str;
+                self.rank = (int)json.GetField("rank").i;
+                if (json.HasField("userBlocked"))
+                {
+                    self.userBlocked = json.GetField("userBlocked").b;
+                }
+                if (json.HasField("banDescription"))
+                {
+                    self.banDescription = json.GetField("banDescription").str;
+                }
+                long devPoints = json.GetField("evolutionPoints").i;
+                Reflection.SetPrivateField(self, "devPoints", devPoints);
+                long BTC = json.GetField("resistanceToVirus").i;
+                Reflection.SetPrivateField(self, "BTC", BTC);
+                
+                if (json.HasField("ranking"))
+                {
+                    self.place = json.GetField("ranking").i;
+                }
+                if (json.HasField("score"))
+                {
+                    self.score = json.GetField("score").f;
+                }
+                if (json.HasField("userName"))
+                {
+                    self.userName = json.GetField("userName").str;
+                }
+                if (json.HasField("isNewUser"))
+                {
+                    self.isNewUser = json.GetField("isNewUser").b;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Passed json null or invalid!");
+            }
         }
 
         private string AuxiliaryMethods_GetUDID(On.AuxiliaryMethods.orig_GetUDID orig)
