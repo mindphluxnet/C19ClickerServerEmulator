@@ -27,7 +27,7 @@ router.post("/SetRTV", (req, res) => {
 
   db.update(
     { udid: UDID },
-    { $set: { RawMaterialCount_ResistanceToVirus: rtv, last_activity: Date.now() } },
+    { $set: { RawMaterialCount_ResistanceToVirus: parseInt(rtv), last_activity: Date.now() } },
     {},
     function (err, numReplaced) {
       res.send({ unlocked: true });
@@ -43,7 +43,7 @@ router.post("/AddScore", (req, res) => {
 
   db.update(
     { udid: UDID },
-    { $set: { score: score, RawMaterialCount_ResistanceToVirus: rtv, last_activity: Date.now() } },
+    { $set: { score: parseInt(score), RawMaterialCount_ResistanceToVirus: parseInt(rtv), last_activity: Date.now() } },
     {},
     function (err, numReplaced) {
       res.send({ unlocked: true });
@@ -58,7 +58,7 @@ router.post("/SetEP", (req, res) => {
 
   db.update(
     { udid: UDID },
-    { $set: { ep: ep } },
+    { $set: { ep: parseInt(ep) } },
     {},
     function (err, numReplaced) {
       res.send({ unlocked: true });

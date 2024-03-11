@@ -11,12 +11,6 @@ const TaskType = require("./Enums/TaskType");
 
 const db = require("./ServerModules/Database");
 
-const OfflinePlayers = require("./ServerTasks/OfflinePlayers");
-const offlinePlayersTask = new OfflinePlayers(db);
-
-// every 5 seconds, add 1 Resistance to Virus to players offline for 60+ seconds.
-setInterval(() => offlinePlayersTask.updateOfflinePlayers(), 5000);
-
 var AppConfig = require("./ServerModules/AppConfig");
 router.use("/AppConfig", AppConfig);
 
@@ -117,8 +111,14 @@ router.post("/GetPlayerData", (req, res) => {
       );
     } else {
       console.log("Found existing account");
+
+      // add 1 RTV for every 5 seconds offline beyond 60 seconds
+      if(Date.now() - item[0]["last_activity"] >= 60000 && !item[0]["userBlocked"]) {        
+        item[0]["RawMaterialCount_ResistanceToVirus"] += Math.floor(((Date.now() - (item[0]["last_activity"] - 60000)) / 5) / 1000);
+      }
+
       item[0]["resistanceToVirus"] =
-        item[0]["RawMaterialCount_ResistanceToVirus"];
+        parseInt(item[0]["RawMaterialCount_ResistanceToVirus"]);        
       res.send(item[0]);
     }
   });
