@@ -9,6 +9,7 @@ The loader uses Doorstop to inject BepInEx into the game process which injects m
 * changes server IP to localhost to enable local server use
 * implemented incomplete UpdateTask method
 * UDID is now SteamUserID instead of something that only really seems to work on mobile devices
+* Resistance to Virus is now server-side and no longer stored in PlayerPrefs
 
 # Fixes
 

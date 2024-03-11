@@ -35,6 +35,11 @@ npm devstart
 
 with nodemon active without wiping the database.
 
+# Gameplay changes
+
+* Originally the game only added Resistance to Virus (RTV) when the user was actively playing, which feels wrong for a clicker game. Since there's a server involved anyway
+I've patched the game to use the server-side RTV value only. The server now also adds 1 RTV for every 5 seconds the player was offline. This makes the game much more playable.
+
 # What works - and what doesn't
 
 * User accounts: working. New users get a new account created automatically. Now uses Steam to get an UDID.
@@ -45,6 +50,7 @@ with nodemon active without wiping the database.
 * Tasks: working.
 * Cards: partially working, but missing data.
 * Advancement: working.
+* Persistence: mostly working except for task progress. 
 
 # Problems
 
